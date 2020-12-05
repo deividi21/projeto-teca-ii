@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.melihyarikkaya.rnserialport.RNSerialportPackage;
 import com.bmateam.reactnativeusbserial.ReactUsbSerialPackage;
 import com.bastengao.serialport.SerialPortApiPackage;
 import com.facebook.react.ReactInstanceManager;

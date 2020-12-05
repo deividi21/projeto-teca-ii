@@ -528,6 +528,7 @@ void loop()
 
 if (Serial.available())
 {
+  flashLED(75);
   Serial.println("Mensagem recebida");
   String msg = "";
   char cmsg[64] {};
@@ -545,7 +546,6 @@ if (Serial.available())
     Serial.println("Capturando imagem...");
     capture_handler();
   }
-
 }
   
   // put your main code here, to run repeatedly:

@@ -1,30 +1,6 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Button, KeyboardAvoidingView, ActivityIndicator, Alert } from 'react-native';
-import { UsbSerial} from 'react-native-usbserial';
-
-const usbs = new UsbSerial();
-
-async function getDeviceAsync() {
-
-    try {
-        const deviceList = await usbs.getDeviceListAsync();
-        const firstDevice = deviceList[0];
-        
-        console.log(firstDevice);
-        console.log("teste");
-
-        if (firstDevice) {
-            const usbSerialDevice = await usbs.openDeviceAsync(firstDevice);
-            
-            console.log(usbSerialDevice);
-        }
-    } catch (err) {
-        console.warn(err);
-    }
-}
-
-
-
+import { StyleSheet, ScrollView, View, Button, KeyboardAvoidingView, ActivityIndicator, Alert, DeviceEventEmitter } from 'react-native';
+import { RNSerialport, definitions, actions } from "react-native-serialport";
 
 export default class CameraPage extends React.Component {
 
@@ -37,8 +13,55 @@ export default class CameraPage extends React.Component {
     }
 
     componentDidMount() {
+        DeviceEventEmitter.addListener(
+            actions.ON_SERVICE_STARTED,
+            this.onServiceStarted,
+            this
+        );
+        DeviceEventEmitter.addListener(
+            actions.ON_SERVICE_STOPPED,
+            this.onServiceStopped,
+            this
+        );
+        DeviceEventEmitter.addListener(
+            actions.ON_DEVICE_ATTACHED,
+            this.onDeviceAttached,
+            this
+        );
+        DeviceEventEmitter.addListener(
+            actions.ON_DEVICE_DETACHED,
+            this.onDeviceDetached,
+            this
+        );
+        DeviceEventEmitter.addListener(actions.ON_ERROR, this.onError, this);
+        DeviceEventEmitter.addListener(actions.ON_CONNECTED, this.onConnected, this);
+        DeviceEventEmitter.addListener(
+            actions.ON_DISCONNECTED,
+            this.onDisconnected,
+            this
+        );
+        DeviceEventEmitter.addListener(actions.ON_READ_DATA, this.onReadData, this);
 
+        //.
+        // Set Your Callback Methods in here
+        //.
+        RNSerialport.setReturnedDataType(definitions.RETURNED_DATA_TYPES.HEXSTRING);
+        RNSerialport.setAutoConnect(false);
+        RNSerialport.startUsbService();
+        //Started usb listener
     }
+
+
+    componentWillUnmount = async() => {
+        DeviceEventEmitter.removeAllListeners();
+        const isOpen = await RNSerialport.isOpen();
+        if (isOpen) {
+          Alert.alert("isOpen", isOpen);
+          RNSerialport.disconnect();
+        }
+        RNSerialport.stopUsbService();
+      }
+      
 
     receberCom() {
         getDeviceAsync();
@@ -67,7 +90,6 @@ export default class CameraPage extends React.Component {
             </View>
         )
     }
-
 
     renderMessage() {
         const { message } = this.state;
