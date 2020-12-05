@@ -1,83 +1,45 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import CameraPage from './src/pages/CameraPage.js';
+import LoginPage from './src/pages/LoginPage.js';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const AppNavigator = createStackNavigator(
+  {
+    'Login': {
+      screen: LoginPage,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    'Camera': {
+      screen: CameraPage,
+      navigationOptions: {
+        title: 'Camera',
+        headerTitleStyle: {
+          textAlign: 'center',
+          fontSize: 20,
+        },
+      }
+    },
+  },
+  {
+    defaultNavigationOptions: {
+      title: 'HardwareAccess',
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: '#6542f4',
+        borderBottomColor: '#f4f2ff',
+      },
+      headerTitleStyle: {
+        color: 'white',
+        fontSize: 40,
+        flexGrow: 1,
+        textAlign: 'center',
+      }
+    }
+  }
+);
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const AppContainer = createAppContainer(AppNavigator);
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <View style={styles.body}>
-
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+export default AppContainer;
