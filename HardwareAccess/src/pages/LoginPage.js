@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 import FormRow from '../components/FormRow';
 import firebase from 'firebase';
-
 export default class LoginPage extends React.Component {
 
     constructor(props) {
