@@ -39,7 +39,7 @@ export default class LoginPage extends React.Component {
             measurementId: "G-SE51Z977BF"
           };
           // Initialize Firebase
-          //firebase.initializeApp(firebaseConfig);
+          firebase.initializeApp(firebaseConfig);
     }
 
     onChangeHandler(field, value) {
